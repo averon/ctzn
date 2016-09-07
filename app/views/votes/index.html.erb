@@ -1,0 +1,30 @@
+<table id="votes-table" class="table">
+  <thead>
+    <tr>
+      <th>Roll ID</th>
+      <th>Chamber</th>
+      <th>Vote Type</th>
+      <th>Question</th>
+      <th>Result</th>
+      <th>Voted At</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @votes.sort_by { |v| v.voted_at }.each do |vote| %>
+    <tr>
+      <td><a href="/votes/<%= vote.roll_id %>"><%= vote.roll_id %></a></td>
+      <td><%= vote.chamber.capitalize %></td>
+      <td><%= vote.vote_type.capitalize %></td>
+      <td><%= vote.question %></td>
+      <td><%= vote.result %></td>
+      <td><%= vote.voted_at %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $('#votes-table').DataTable();
+  });
+</script>

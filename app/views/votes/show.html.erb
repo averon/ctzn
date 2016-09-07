@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-8">
+    <%= pie_chart(@vote.chart_data, @vote.highcharts_options) %>
+  </div>
+  <div class="col-md-4">
+    <table class="table table-condensed">
+      <tr>
+        <th>Party</th>
+        <th>Yea</th>
+        <th>Nay</th>
+      </tr>
+      <tr>
+        <td>Republican</td>
+        <td><%= @vote.r_yeas %></td>
+        <td><%= @vote.r_nays %></td>
+      </tr>
+      <tr>
+        <td>Democratic</td>
+        <td><%= @vote.d_yeas %></td>
+        <td><%= @vote.d_nays %></td>
+      </tr>
+      <tr>
+        <td>Independant</td>
+        <td><%= @vote.i_yeas %></td>
+        <td><%= @vote.i_nays %></td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td><%= @vote.yeas_total %></td>
+        <td><%= @vote.nays_total %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row">
+  <table id="roll-call-table" class="table">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>State</th>
+        <th>Chamber</th>
+        <th>Party</th>
+        <th>Vote</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @legislators.each do |legislator| %>
+      <tr>
+        <td><%= legislator.first_name.capitalize %></td>
+        <td><%= legislator.last_name.capitalize %></td>
+        <td><%= legislator.state.upcase %></td>
+        <td><%= legislator.chamber.capitalize %></td>
+        <td><%= legislator.party.capitalize %></td>
+        <td><%= legislator.vote.capitalize %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#roll-call-table').DataTable();
+  });
+</script>
