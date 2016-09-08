@@ -23,8 +23,8 @@
   </tbody>
 </table>
 
-<script>
+<%= javascript_tag do %>
   $(document).ready(function() {
     $('#votes-table').DataTable();
   });
-</script>
+<% end %>
