@@ -34,6 +34,7 @@ class SunlightClient
   end
 
   def self.url_for(keyword)
+    options = '&congress=114' if %i(bills votes).include?(keyword)
     "#{BASE_URL}/#{keyword}?apikey=#{API_KEY}"
   end
 end
