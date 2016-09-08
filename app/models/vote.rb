@@ -2,9 +2,6 @@ require 'net/http'
 require 'nokogiri'
 
 class Vote < ApplicationRecord
-  def self.scrub_params(hash)
-    hash.select { |k| self.attribute_names.index(k) }
-  end
 
   def roll
     @roll ||= Nokogiri::HTML(Net::HTTP.get(URI(url)))
