@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907045134) do
+ActiveRecord::Schema.define(version: 20160908052710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,14 @@ ActiveRecord::Schema.define(version: 20160907045134) do
     t.json     "history"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+  end
+
+  create_table "cast_votes", force: :cascade do |t|
+    t.string   "legislator_id", null: false
+    t.string   "roll_id",       null: false
+    t.string   "vote_cast",     null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
   end
 
   create_table "legislators", force: :cascade do |t|
@@ -52,6 +60,7 @@ ActiveRecord::Schema.define(version: 20160907045134) do
     t.string   "vote_type"
     t.string   "voted_at"
     t.string   "year"
+    t.json     "summary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

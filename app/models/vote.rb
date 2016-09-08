@@ -1,24 +1,15 @@
-require 'net/http'
-require 'nokogiri'
-
 class Vote < ApplicationRecord
-
-  def roll
-    @roll ||= Nokogiri::HTML(Net::HTTP.get(URI(url)))
-  end
-
-  def votes
-    roll.search('recorded-vote')
-  end
+  has_many :cast_votes, foreign_key: :roll_id, primary_key: :roll_id
+  has_many :legislators, through: :cast_votes
 
   def chart_data
     {
-      'Yeas [D]' => d_yeas,
-      'Yeas [I]' => i_yeas,
-      'Yeas [R]' => r_yeas,
-      'Nays [D]' => d_nays,
-      'Nays [I]' => i_nays,
-      'Nays [R]' => r_nays,
+      'Yeas [D]' => summary['d_yeas'],
+      'Yeas [I]' => summary['i_yeas'],
+      'Yeas [R]' => summary['r_yeas'],
+      'Nays [D]' => summary['d_nays'],
+      'Nays [I]' => summary['i_nays'],
+      'Nays [R]' => summary['r_nays'],
     }
   end
 
@@ -43,41 +34,5 @@ class Vote < ApplicationRecord
         }
       }
     }
-  end
-
-  def r_yeas
-    roll.search('yea-total')[0].children[0].text.to_i
-  end
-
-  def r_nays
-    roll.search('nay-total')[0].children[0].text.to_i
-  end
-
-  def d_yeas
-    roll.search('yea-total')[1].children[0].text.to_i
-  end
-
-  def d_nays
-    roll.search('nay-total')[1].children[0].text.to_i
-  end
-
-  def i_yeas
-    roll.search('yea-total')[2].children[0].text.to_i
-  end
-
-  def i_nays
-    roll.search('nay-total')[2].children[0].text.to_i
-  end
-
-  def yeas_total
-    roll.search('yea-total')[3].children[0].text.to_i
-  end
-
-  def nays_total
-    roll.search('nay-total')[3].children[0].text.to_i
-  end
-
-  def total
-    yeas_total + nays_total
   end
 end

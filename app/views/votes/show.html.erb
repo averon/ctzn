@@ -11,23 +11,23 @@
       </tr>
       <tr>
         <td>Republican</td>
-        <td><%= @vote.r_yeas %></td>
-        <td><%= @vote.r_nays %></td>
+        <td><%= @vote.summary['r_yeas'] %></td>
+        <td><%= @vote.summary['r_nays'] %></td>
       </tr>
       <tr>
         <td>Democratic</td>
-        <td><%= @vote.d_yeas %></td>
-        <td><%= @vote.d_nays %></td>
+        <td><%= @vote.summary['d_yeas'] %></td>
+        <td><%= @vote.summary['d_nays'] %></td>
       </tr>
       <tr>
         <td>Independant</td>
-        <td><%= @vote.i_yeas %></td>
-        <td><%= @vote.i_nays %></td>
+        <td><%= @vote.summary['i_yeas'] %></td>
+        <td><%= @vote.summary['i_nays'] %></td>
       </tr>
       <tr>
         <td>Total</td>
-        <td><%= @vote.yeas_total %></td>
-        <td><%= @vote.nays_total %></td>
+        <td><%= @vote.summary['yeas_total'] %></td>
+        <td><%= @vote.summary['nays_total'] %></td>
       </tr>
     </table>
   </div>
@@ -45,14 +45,14 @@
       </tr>
     </thead>
     <tbody>
-    <% @legislators.each do |legislator| %>
+    <% @cast_votes.each do |cast_vote| %>
       <tr>
-        <td><%= legislator.first_name.capitalize %></td>
-        <td><%= legislator.last_name.capitalize %></td>
-        <td><%= legislator.state.upcase %></td>
-        <td><%= legislator.chamber.capitalize %></td>
-        <td><%= legislator.party.capitalize %></td>
-        <td><%= legislator.vote.capitalize %></td>
+        <td><%= cast_vote.legislator.first_name.capitalize %></td>
+        <td><%= cast_vote.legislator.last_name.capitalize %></td>
+        <td><%= cast_vote.legislator.state.upcase %></td>
+        <td><%= cast_vote.legislator.chamber.capitalize %></td>
+        <td><%= cast_vote.legislator.party.capitalize %></td>
+        <td><%= cast_vote.vote_cast %></td>
       </tr>
     <% end %>
     </tbody>

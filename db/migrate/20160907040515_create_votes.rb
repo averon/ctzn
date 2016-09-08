@@ -14,6 +14,7 @@ class CreateVotes < ActiveRecord::Migration[5.0]
       t.string  :vote_type
       t.string  :voted_at
       t.string  :year
+      t.json    :summary
 
       t.timestamps
     end
