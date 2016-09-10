@@ -1,0 +1,19 @@
+<h1>My Legislators</h1>
+
+<%= form_tag('/', method: 'get') do %>
+  <%= label_tag(:zip, 'Zip Code:') %>
+  <%= text_field_tag(:zip) %>
+  <%= submit_tag('Search') %>
+<% end %>
+
+<% @legislators.each do |legislator| %>
+  <h2><%= legislator.first_name %> <%= legislator.last_name %></h2>
+
+  <ul>
+    <li>Chamber: <%= legislator.chamber.capitalize %></li>
+    <li>State: <%= legislator.state.upcase %></li>
+  </ul>
+
+  <a href="/legislators/<%= legislator.bioguide_id %>"><img src='<%= legislator.img %>'></a>
+<% end %>
+

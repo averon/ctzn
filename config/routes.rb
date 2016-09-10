@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
-  resources :votes, only: [:index, :show]
-  resources :bills, only: [:index, :show]
+  root 'legislators#location'
+
+  resources :votes,       only: [:index, :show]
+  resources :bills,       only: [:index, :show]
+  resources :legislators, only: [:index, :show]
 end
