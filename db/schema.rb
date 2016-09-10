@@ -19,12 +19,15 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.string   "bill_id"
     t.string   "chamber"
     t.string   "short_title"
+    t.string   "official_title"
     t.string   "sponsor_id"
+    t.datetime "introduced_on"
     t.datetime "last_action_at"
     t.string   "pdf"
     t.json     "history"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.string   "related_bill_ids", default: [],              array: true
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   create_table "cast_votes", force: :cascade do |t|

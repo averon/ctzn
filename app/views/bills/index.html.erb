@@ -5,18 +5,22 @@
       <th>Chamber</th>
       <th>Short Title</th>
       <th>Sponsor</th>
-      <th>Last Action At</th>
+      <th>Active</th>
+      <th>Votes</th>
+      <th>Enacted</th>
       <th>PDF</th>
     </tr>
   </thead>
   <tbody>
   <% @bills.each do |bill| %>
     <tr>
-      <td><a href="/bill/<%= bill.bill_id %>"><%= bill.bill_id %></a></td>
+      <td><a href="/bills/<%= bill.bill_id %>"><%= bill.bill_id %></a></td>
       <td><%= bill.chamber.capitalize %></td>
       <td><%= bill.short_title %></td>
       <td><%= bill.sponsor.first_name %> <%= bill.sponsor.last_name %></td>
-      <td><%= bill.last_action_at %></td>
+      <td><%= bill.history['active'] %></td>
+      <td><%= bill.votes.any? %></td>
+      <td><%= bill.history['enacted'] %></td>
       <td><a href=<%= bill.pdf %>>PDF</a></td>
     </tr>
   <% end %>

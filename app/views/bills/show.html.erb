@@ -1,0 +1,42 @@
+<h1><%= @bill.short_title %></h1>
+<p><%= @bill.official_title %></p>
+
+<p><a href='<%= @bill.pdf %>'>PDF</a></p>
+
+<ul>
+  <li>Introduced: <%= @bill.introduced_on %></li>
+  <li>Sponsor: <%= @bill.sponsor.first_name %> <%= @bill.sponsor.last_name %></li>
+  <li>Last Action: <%= @bill.last_action_at %></li>
+</ul>
+
+<h3>Timeline</h3>
+<ol>
+  <li>Active: <%= @bill.active? %></li>
+<% if @bill.active? %>
+  <li>House Vote: <%= @bill.history['house_passage_result'] %></li>
+  <li>Senate Vote: <%= @bill.history['senate_passage_result'] %></li>
+  <li>Vetoed: <%= @bill.vetoed? %></li>
+  <% if @bill.vetoed? %>
+    <li>House Override: <% @bill.history['house_override_result'] %></li>
+    <li>Senate Override: <% @bill.history['senate_override_result'] %></li>
+  <% end %>
+  <% if @bill.awaiting_signature? %>
+    <li>Awaiting Signature: <%= @bill.awaiting_signature? %></li>
+  <% end %>
+  <li>Enacted: <%= @bill.enacted? %></li>
+<% end %>
+</ol>
+
+<h3>Votes</h3>
+<ul>
+<% @bill.votes.each do |vote| %>
+  <li><a href='/votes/<%= vote.roll_id %>'><%= vote.roll_id %></a> - <%= vote.question %></li>
+<% end %>
+</ul>
+
+<h3>Related Bills</h3>
+<ul>
+<% @related_bills.each do |bill| %>
+  <li><a href='/bills/<%= bill.bill_id %>'><%= bill.bill_id %></a> - <%= bill.short_title %></li>
+<% end %>
+</ul>
