@@ -4,9 +4,10 @@ class SunlightClient
 
   API_KEY = "ffc9a6f15c2940399e13d04651a8b999"
   BASE_URL = "http://congress.api.sunlightfoundation.com"
+  VALID_KEYWORDS = %i(legislators legislators/locate bills votes)
 
   def self.get(keyword, options={})
-    raise ArgumentError unless %i(legislators bills votes).include?(keyword)
+    raise ArgumentError unless VALID_KEYWORDS.include?(keyword)
 
     first_page = options.fetch(:page) { 1 }
     last_page =  options.delete(:last_page) { page_count(keyword, options) }
@@ -20,15 +21,22 @@ class SunlightClient
   end
 
   def self.get_first(keyword, options={})
-    raise ArgumentError unless %i(legislators bills votes).include?(keyword)
+    raise ArgumentError unless VALID_KEYWORDS.include?(keyword)
     url = url_for(keyword, options)
     get_content(url)["results"].first
   end
 
   def self.page_count(keyword, options)
     metadata = get_content(url_for(keyword, options))
-    pages = metadata['count'] / metadata['page']['per_page']
-    pages.zero? ? 1 : pages
+    pages = metadata.fetch('count') { 0 } / metadata['page'].to_h.fetch('per_page') { 1 }
+
+    if metadata['error']
+      0
+    elsif pages.zero?
+      1
+    else
+      pages
+    end
   end
 
   def self.get_content(url)
