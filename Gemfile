@@ -16,6 +16,8 @@ gem 'turbolinks', '~> 5'               # Turbolinks makes navigating your web ap
 gem 'jbuilder', '~> 2.5'               # Build JSON APIs with ease.
 gem 'nokogiri'                         # Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser with XPath and CSS selector support.
 
+gem 'activerecord-import'              # library for bulk inserting data using ActiveRecord
+
 # gem 'redis', '~> 3.0'                  # Use Redis adapter to run Action Cable in production
 # gem 'bcrypt', '~> 3.1.7'               # Use ActiveModel has_secure_password
 
