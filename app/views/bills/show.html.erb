@@ -36,9 +36,16 @@
 <% end %>
 </ol>
 
+<h3>Amendments</h3>
+<ul>
+<% @amendments.each do |amendment| %>
+  <li><a href='/amendment/<%= amendment.amendment_id %>'><%= amendment.amendment_id %></a> - <%= amendment.purpose %></li>
+<% end %>
+</ul>
+
 <h3>Votes</h3>
 <ul>
-<% @bill.votes.each do |vote| %>
+<% @votes.each do |vote| %>
   <li><a href='/votes/<%= vote.roll_id %>'><%= vote.roll_id %></a> - <%= vote.question %></li>
 <% end %>
 </ul>

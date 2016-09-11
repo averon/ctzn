@@ -6,6 +6,7 @@
       <th>Short Title</th>
       <th>Sponsor</th>
       <th>Active</th>
+      <th>Amendments</th>
       <th>Votes</th>
       <th>Enacted</th>
       <th>PDF</th>
@@ -19,6 +20,7 @@
       <td><%= bill.short_title %></td>
       <td><%= bill.sponsor.first_name %> <%= bill.sponsor.last_name %></td>
       <td><%= bill.history['active'] %></td>
+      <td><%= bill.amendments.any? %></td>
       <td><%= bill.votes.any? %></td>
       <td><%= bill.history['enacted'] %></td>
       <td><a href=<%= bill.pdf %>>PDF</a></td>

@@ -10,10 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160911015825) do
+ActiveRecord::Schema.define(version: 20160911040644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "amendments", id: false, force: :cascade do |t|
+    t.string   "amendment_id",   null: false
+    t.string   "introduced_on"
+    t.string   "last_action_at"
+    t.string   "purpose"
+    t.string   "amends_bill_id", null: false
+    t.string   "sponsor_id",     null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["amendment_id"], name: "index_amendments_on_amendment_id", unique: true, using: :btree
+    t.index ["amends_bill_id"], name: "index_amendments_on_amends_bill_id", using: :btree
+    t.index ["sponsor_id"], name: "index_amendments_on_sponsor_id", using: :btree
+  end
 
   create_table "bills", id: false, force: :cascade do |t|
     t.string   "bill_id",                       null: false

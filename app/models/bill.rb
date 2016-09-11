@@ -5,6 +5,7 @@ class Bill < ApplicationRecord
   alias_attribute :sponsor, :legislator
 
   has_many :votes
+  has_many :amendments, foreign_key: :amends_bill_id, primary_key: :bill_id
 
   def active?
     history['active']

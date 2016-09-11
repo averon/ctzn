@@ -133,6 +133,22 @@ namespace :fetch do
       Committee.delete_all
     end
   end
+
+  task :amendments do
+    puts "Deleting legislators..."
+    Amendment.delete_all
+
+    puts "Fetching amendments..."
+    amendments_params = []
+    Bill.all.pluck(:bill_id).each_slice(100) do |bill_ids|
+      SunlightClient.get(:amendments, chamber: 'house', amends_bill_id__in: bill_ids.join('|')).each do |amendment|
+        next if MISSING_LEGISLATORS.include?(amendment['sponsor_id'])
+        amendments_params << Amendment.scrub_params(amendment)
+      end
+    end
+
+    Amendment.create(amendments_params)
+  end
 end
 
 def collect_vote_summary(roll)
