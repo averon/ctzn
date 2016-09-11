@@ -2,7 +2,7 @@ require 'net/http'
 require 'nokogiri'
 
 namespace :fetch do
-  task all: %i(legislators bills votes)
+  task all: %i(legislators bills votes amendments)
 
   task :legislators do
     puts "Deleting legislators..."
