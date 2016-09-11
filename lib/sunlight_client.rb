@@ -4,7 +4,7 @@ class SunlightClient
 
   API_KEY = "ffc9a6f15c2940399e13d04651a8b999"
   BASE_URL = "http://congress.api.sunlightfoundation.com"
-  VALID_KEYWORDS = %i(legislators legislators/locate bills votes)
+  VALID_KEYWORDS = %i(legislators legislators/locate committees bills votes)
 
   def self.get(keyword, options={})
     raise ArgumentError unless VALID_KEYWORDS.include?(keyword)

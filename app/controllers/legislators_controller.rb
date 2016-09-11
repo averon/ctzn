@@ -1,12 +1,13 @@
 class LegislatorsController < ApplicationController
   def index
-    @legislators = Legislator.all
+    @legislators = Legislator.all.includes(:committee_memberships)
 
     render :index
   end
 
   def show
     @legislator = Legislator.find_by_bioguide_id(params[:id])
+    @committees = @legislator.committees
     @bills = @legislator.bills
     @votes = @legislator.votes.includes(:bill).group_by(&:bill_id)
 

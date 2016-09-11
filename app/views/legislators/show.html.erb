@@ -7,6 +7,14 @@
 
 <img src='<%= @legislator.img %>'%>
 
+<h3>Committees:</h3>
+<ul>
+<% @committees.each do |committee| %>
+  <li><a href='/committees/<%= committee.committee_id %>'><%= committee.committee_id %></a> - <%= committee.name %></li>
+<% end %>
+</ul>
+
+
 <h3>Sponsored Bills:</h3>
 <ul>
 <% @bills.each do |bill| %>

@@ -1,0 +1,26 @@
+<table id="committees-table" class="table">
+  <thead>
+    <tr>
+      <th>Committee ID</th>
+      <th>Chamber</th>
+      <th>Name</th>
+      <th>Committee Members</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @committees.each do |committee| %>
+    <tr>
+      <td><a href="/committees/<%= committee.committee_id %>"><%= committee.committee_id %></a></td>
+      <td><%= committee.chamber.capitalize %></td>
+      <td><%= committee.name %></td>
+      <td><%= committee.legislators.count %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<script>
+  $(document).ready(function() {
+    $('#committees-table').DataTable();
+  });
+</script>

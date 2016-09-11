@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160908052710) do
+ActiveRecord::Schema.define(version: 20160911015825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,25 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.index ["legislator_id", "roll_id"], name: "index_cast_votes_on_legislator_id_and_roll_id", unique: true, using: :btree
     t.index ["legislator_id"], name: "index_cast_votes_on_legislator_id", using: :btree
     t.index ["roll_id"], name: "index_cast_votes_on_roll_id", using: :btree
+  end
+
+  create_table "committee_memberships", force: :cascade do |t|
+    t.string   "committee_id",  null: false
+    t.string   "legislator_id", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["committee_id", "legislator_id"], name: "index_committee_memberships_on_committee_id_and_legislator_id", unique: true, using: :btree
+  end
+
+  create_table "committees", id: false, force: :cascade do |t|
+    t.string   "committee_id",        null: false
+    t.string   "chamber"
+    t.string   "name"
+    t.string   "member_ids"
+    t.string   "parent_committee_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.index ["committee_id"], name: "index_committees_on_committee_id", unique: true, using: :btree
   end
 
   create_table "legislators", id: false, force: :cascade do |t|

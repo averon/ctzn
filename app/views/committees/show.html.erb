@@ -1,3 +1,11 @@
+<h1><%= @committee.name %></h1>
+
+<ul>
+  <li>Chamber: <%= @committee.chamber.capitalize %></li>
+  <li>Members: <%= @legislators.count %></li>
+</ul>
+
+<h3>Legislators:</h3>
 <table id="legislators-table" class="table">
   <thead>
     <tr>
@@ -6,21 +14,18 @@
       <th>Chamber</th>
       <th>State</th>
       <th>Party</th>
-      <th>Committees</th>
     </tr>
   </thead>
   <tbody>
-  <% @legislators.each do |legislator| %>
+<% @legislators.each do |legislator| %>
     <tr>
       <td><a href="/legislators/<%= legislator.bioguide_id %>"><%= legislator.first_name %></a></td>
       <td><a href="/legislators/<%= legislator.bioguide_id %>"><%= legislator.last_name %></a></td>
       <td><%= legislator.chamber.capitalize %></td>
       <td><%= legislator.state.upcase %></td>
       <td><%= legislator.party.capitalize %></td>
-      <td><%= legislator.committee_memberships.count %></td>
     </tr>
-  <% end %>
-  </tbody>
+<% end %>
 </table>
 
 <%= javascript_tag do %>

@@ -106,6 +106,31 @@ namespace :fetch do
       Vote.delete_all
     end
   end
+
+  namespace :committees do
+    task :seed do
+      puts "Fetching committees..."
+      committees = SunlightClient.get(:committees, chamber: 'house', per_page: 50)
+
+      puts "Preparing committees..."
+      committees_params = committees.map { |committee| Committee.scrub_params(committee) }
+
+      puts "Creating committees..."
+      Committee.create(committees_params)
+
+      puts "Creating committee memberships..."
+      Legislator.all.pluck(:bioguide_id).each do |bioguide_id|
+        SunlightClient.get(:committees, chamber: 'house', member_ids: bioguide_id).each do |committee|
+          CommitteeMembership.create(legislator_id: bioguide_id, committee_id: committee['committee_id'])
+        end
+      end
+    end
+
+    task :destroy do
+      puts "Deleting committees..."
+      Committee.delete_all
+    end
+  end
 end
 
 def collect_vote_summary(roll)
