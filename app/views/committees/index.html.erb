@@ -5,6 +5,7 @@
       <th>Chamber</th>
       <th>Name</th>
       <th>Committee Members</th>
+      <th>Subcommittees</th>
     </tr>
   </thead>
   <tbody>
@@ -14,6 +15,7 @@
       <td><%= committee.chamber.capitalize %></td>
       <td><%= committee.name %></td>
       <td><%= committee.legislators.count %></td>
+      <td><%= committee.subcommittees.count %></td>
     </tr>
   <% end %>
   </tbody>

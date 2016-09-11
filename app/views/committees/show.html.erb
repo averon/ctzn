@@ -1,9 +1,24 @@
 <h1><%= @committee.name %></h1>
 
-<ul>
-  <li>Chamber: <%= @committee.chamber.capitalize %></li>
-  <li>Members: <%= @legislators.count %></li>
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <ul>
+      <li>Chamber: <%= @committee.chamber.capitalize %></li>
+      <li>Members: <%= @legislators.count %></li>
+    </ul>
+    <% if @subcommittees.any? %>
+    <h3>Subcommittees</h3>
+    <% end %>
+    <ul>
+    <% @subcommittees.each do |subcommittee| %>
+      <li><a href='/committees/<%= subcommittee.committee_id %>'><%= subcommittee.name %></a></li>
+    <% end %>
+    </ul>
+  </div>
+  <div class="col-md-8">
+    <%= pie_chart(@committee.chart_data, @committee.highcharts_options) %>
+  </div>
+</div>
 
 <h3>Legislators:</h3>
 <table id="legislators-table" class="table">
