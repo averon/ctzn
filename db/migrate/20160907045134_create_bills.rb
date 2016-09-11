@@ -1,7 +1,7 @@
 class CreateBills < ActiveRecord::Migration[5.0]
   def change
-    create_table :bills do |t|
-      t.string   :bill_id
+    create_table :bills, id: false do |t|
+      t.string   :bill_id, null: false
       t.string   :chamber
       t.string   :short_title
       t.string   :official_title
@@ -14,5 +14,7 @@ class CreateBills < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+
+    add_index :bills, :bill_id, unique: true
   end
 end

@@ -1,7 +1,9 @@
 class Vote < ApplicationRecord
-  has_many :cast_votes, foreign_key: :roll_id, primary_key: :roll_id
+  self.primary_key = 'roll_id'
+
+  has_many :cast_votes, primary_key: :roll_id, foreign_key: :roll_id
   has_many :legislators, through: :cast_votes
-  belongs_to :bill, foreign_key: :bill_id, primary_key: :bill_id
+  belongs_to :bill
 
   def chart_data
     {

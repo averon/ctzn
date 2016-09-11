@@ -13,30 +13,33 @@ namespace :fetch do
       .each { |l| Legislator.create(Legislator.scrub_params(l)) }
   end
 
-  task bills: %i(bills:destroy bills:seed bills:related)
+  task bills: %i(bills:destroy bills:seed bills:recent bills:related)
 
   MISSING_LEGISLATORS = ['B000589']
 
   namespace :bills do
     task :seed do
       puts "Fetching bills..."
-      SunlightClient.get(:bills, congress: 114, chamber: 'house', per_page: 50, last_page: 20)
-        .map { |bill| bill.tap { |b| b['pdf'] = b['last_version'].to_h['urls'].to_h['pdf'] } }
-        .each { |b| Bill.create(Bill.scrub_params(b)) }
+      bills = SunlightClient.get(:bills, congress: 114, chamber: 'house', per_page: 50, last_page: 20)
+
+      puts "Preparing bills..."
+      bills_params = prepare_bills(bills)
+
+      puts "Creating bills..."
+      Bill.create(bills_params)
     end
 
     task :related do
       loop do
+        puts "Fetching related bills..."
         related_bills = SunlightClient.get(:bills, bill_id__in: get_related_bill_ids.join('|'))
-        break if related_bills.reject { |b| MISSING_LEGISLATORS.include?(b['sponsor_id']) }.empty?
+        break puts "No related bills found." if related_bills.reject { |b| MISSING_LEGISLATORS.include?(b['sponsor_id']) }.empty?
+        puts "Found #{related_bills.count} related bills."
 
-        puts "Fetching related bills (#{related_bills.count})..."
+        puts "Preparing bills..."
+        bills_params = prepare_bills(related_bills)
 
-        bills_params = related_bills.map do |bill|
-          bill['pdf'] = bill['last_version'].to_h['urls'].to_h['pdf']
-          Bill.scrub_params(bill)
-        end
-
+        puts "Creating bills..."
         Bill.create(bills_params)
       end
     end
@@ -57,7 +60,7 @@ namespace :fetch do
       puts "Fetching votes..."
       Bill.all.pluck(:bill_id).each_slice(100) do |bill_ids|
         votes = SunlightClient.get(:votes, chamber: 'house', bill_id__in: bill_ids.join('|'))
-        queue.push votes
+        queue.push(votes)
       end
 
       workers = (0..8).map do
@@ -76,14 +79,15 @@ namespace :fetch do
       end
       workers.map(&:join)
 
-      puts "Creating votes"
+      puts "Creating votes..."
       vote_rolls.each { |v, r| v['summary'] = collect_vote_summary(r) }
       Vote.create(vote_rolls.map { |v, _| Vote.scrub_params(v) })
 
-      puts "Collecting votes"
+      puts "Collecting cast votes..."
       headers = %i(legislator_id roll_id vote_cast)
       cast_votes = []
       vote_rolls.each do |vote, roll|
+        puts "Cast votes: #{cast_votes.length}"
         recorded_vote = roll.search('recorded-vote').children.each_slice(2).to_a
         recorded_vote.each do |legislator_hash, cast_vote|
           next if missing_legislators(recorded_vote).include?(legislator_hash['name-id'])
@@ -91,7 +95,7 @@ namespace :fetch do
         end
       end
 
-      puts "Casting votes"
+      puts "Casting votes..."
       CastVote.transaction do
         CastVote.import(headers, cast_votes, validate: false)
       end
@@ -120,10 +124,30 @@ def collect_vote_summary(roll)
   }
 end
 
+def prepare_bills(bills)
+  bills_params = bills.map do |bill|
+    bill['pdf'] = bill['last_version'].to_h['urls'].to_h['pdf']
+    Bill.scrub_params(bill)
+  end
+
+  dedupe_bills(bills_params)
+end
+
+def dedupe_bills(bills_params)
+  grouped_bills = bills_params.group_by { |bill| bill['bill_id'] }
+  grouped_bills.map do |bill_id, bills|
+    if bills.length > 1
+      bills.sort { |b1, b2| Date.parse(b1['last_action_at']) <=> Date.parse(b2['last_action_at']) }.last
+    else
+      bills.first
+    end
+  end
+end
+
 def get_related_bill_ids
   Bill.all.pluck(:related_bill_ids).flatten.uniq - Bill.all.pluck(:bill_id)
 end
 
 def missing_legislators(recorded_vote)
-  recorded_vote.map { |l, _| l['name-id'] } - legislator.all.pluck(:bioguide_id)
+  recorded_vote.map { |l, _| l['name-id'] } - Legislator.all.pluck(:bioguide_id)
 end

@@ -1,6 +1,7 @@
 class CreateVotes < ActiveRecord::Migration[5.0]
   def change
-    create_table :votes do |t|
+    create_table :votes, id: false do |t|
+      t.string  :roll_id, null: false
       t.string  :chamber
       t.string  :congress
       t.integer :number
@@ -8,7 +9,6 @@ class CreateVotes < ActiveRecord::Migration[5.0]
       t.string  :required
       t.string  :result
       t.string  :bill_id
-      t.string  :roll_id
       t.string  :roll_type
       t.string  :url
       t.string  :vote_type
@@ -18,5 +18,7 @@ class CreateVotes < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+
+    add_index :votes, :roll_id, unique: true
   end
 end

@@ -7,5 +7,9 @@ class CreateCastVotes < ActiveRecord::Migration[5.0]
 
       t.timestamps
     end
+
+    add_index :cast_votes, :legislator_id
+    add_index :cast_votes, :roll_id
+    add_index :cast_votes, [:legislator_id, :roll_id], unique: true
   end
 end

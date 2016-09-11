@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(version: 20160908052710) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bills", force: :cascade do |t|
-    t.string   "bill_id"
+  create_table "bills", id: false, force: :cascade do |t|
+    t.string   "bill_id",                       null: false
     t.string   "chamber"
     t.string   "short_title"
     t.string   "official_title"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.string   "related_bill_ids", default: [],              array: true
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.index ["bill_id"], name: "index_bills_on_bill_id", unique: true, using: :btree
   end
 
   create_table "cast_votes", force: :cascade do |t|
@@ -36,20 +37,25 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.string   "vote_cast",     null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["legislator_id", "roll_id"], name: "index_cast_votes_on_legislator_id_and_roll_id", unique: true, using: :btree
+    t.index ["legislator_id"], name: "index_cast_votes_on_legislator_id", using: :btree
+    t.index ["roll_id"], name: "index_cast_votes_on_roll_id", using: :btree
   end
 
-  create_table "legislators", force: :cascade do |t|
+  create_table "legislators", id: false, force: :cascade do |t|
+    t.string   "bioguide_id", null: false
     t.string   "first_name"
     t.string   "last_name"
     t.string   "state"
     t.string   "chamber"
     t.string   "party"
-    t.string   "bioguide_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["bioguide_id"], name: "index_legislators_on_bioguide_id", unique: true, using: :btree
   end
 
-  create_table "votes", force: :cascade do |t|
+  create_table "votes", id: false, force: :cascade do |t|
+    t.string   "roll_id",    null: false
     t.string   "chamber"
     t.string   "congress"
     t.integer  "number"
@@ -57,7 +63,6 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.string   "required"
     t.string   "result"
     t.string   "bill_id"
-    t.string   "roll_id"
     t.string   "roll_type"
     t.string   "url"
     t.string   "vote_type"
@@ -66,6 +71,7 @@ ActiveRecord::Schema.define(version: 20160908052710) do
     t.json     "summary"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["roll_id"], name: "index_votes_on_roll_id", unique: true, using: :btree
   end
 
 end
