@@ -41,4 +41,5 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'spring'             # Spring speeds up development by keeping your application running in the background.
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'rails-erd'          # Easily generate a diagram based on your application's Active Record models
 end
