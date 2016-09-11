@@ -9,6 +9,15 @@
   <li>Last Action: <%= @bill.last_action_at %></li>
 </ul>
 
+<% if @committees.any? %>
+<h3>Committees</h3>
+<% end %>
+<ul>
+<% @committees.each do |committee| %>
+  <li><a href='/committees/<%= committee.committee_id %>'><%= committee.name %></a></li>
+<% end %>
+</ul>
+
 <h3>Timeline</h3>
 <ol>
   <li>Active: <%= @bill.active? %></li>

@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20160911015825) do
     t.string   "pdf"
     t.json     "history"
     t.string   "related_bill_ids", default: [],              array: true
+    t.string   "committee_ids",    default: [],              array: true
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
     t.index ["bill_id"], name: "index_bills_on_bill_id", unique: true, using: :btree

@@ -13,7 +13,7 @@ namespace :fetch do
       .each { |l| Legislator.create(Legislator.scrub_params(l)) }
   end
 
-  task bills: %i(bills:destroy bills:seed bills:recent bills:related)
+  task bills: %i(bills:destroy bills:seed bills:related)
 
   MISSING_LEGISLATORS = ['B000589']
 
@@ -106,6 +106,8 @@ namespace :fetch do
       Vote.delete_all
     end
   end
+
+  task committees: %i(committees:destroy committees:seed)
 
   namespace :committees do
     task :seed do

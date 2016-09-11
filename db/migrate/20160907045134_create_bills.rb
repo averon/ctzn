@@ -11,6 +11,7 @@ class CreateBills < ActiveRecord::Migration[5.0]
       t.string   :pdf
       t.json     :history
       t.string   :related_bill_ids, array: true, default: []
+      t.string   :committee_ids, array: true, default: []
 
       t.timestamps
     end

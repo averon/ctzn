@@ -8,6 +8,7 @@ class BillsController < ApplicationController
   def show
     @bill = Bill.where(bill_id: params[:id]).includes(:votes).first
     @related_bills = Bill.where(bill_id: @bill.related_bill_ids)
+    @committees = Committee.where(committee_id: @bill.committee_ids)
 
     render :show
   end
