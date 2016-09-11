@@ -48,8 +48,8 @@
     <tbody>
     <% @cast_votes.each do |cast_vote| %>
       <tr>
-        <td><%= cast_vote.legislator.first_name.capitalize %></td>
-        <td><%= cast_vote.legislator.last_name.capitalize %></td>
+        <td><a href='/legislators/<%= cast_vote.legislator.bioguide_id %>'><%= cast_vote.legislator.first_name.capitalize %></a></td>
+        <td><a href='/legislators/<%= cast_vote.legislator.bioguide_id %>'><%= cast_vote.legislator.last_name.capitalize %></a></td>
         <td><%= cast_vote.legislator.state.upcase %></td>
         <td><%= cast_vote.legislator.chamber.capitalize %></td>
         <td><%= cast_vote.legislator.party.capitalize %></td>
